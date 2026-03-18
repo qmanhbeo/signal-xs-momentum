@@ -107,7 +107,6 @@ VIX filter [15, 30], MIN_PROBA ≥ 0.55, E=1 H=1 execution.
 
 ## Reproducibility Notes
 
-- Data is not committed (git-ignored). Re-fetch with `python main.py` or Step 1.
 - All results are deterministic (random_state=42 in XGBoost).
 - The 2026 pre-committed expectations were documented in
   `notes/session_23_2026_holdout.md` before the holdout was run.
