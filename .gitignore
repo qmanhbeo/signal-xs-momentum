@@ -1,0 +1,17 @@
+data/
+output/
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.egg-info/
+dist/
+build/
+.ipynb_checkpoints/
+manuscript/paper.pdf
+manuscript/paper.aux
+manuscript/paper.log
+manuscript/paper.bbl
+manuscript/paper.blg
+manuscript/paper.out
+manuscript/figures/
