@@ -31,8 +31,8 @@
 We document short-horizon cross-sectional return predictability in Vietnamese HOSE
 equities. Training an XGBoost classifier on 35 technical and market-relative features
 across 393 stocks with strict walk-forward validation (2015--2025), we find a mean
-daily Spearman Information Coefficient (IC) of $+0.137$ and an annual net-of-cost
-Sharpe ratio of $4.58$ for a concentrated top-5 square-weighted portfolio.
+daily Spearman Information Coefficient (IC) of $+0.152$ and an annual net-of-cost
+Sharpe ratio of $2.19$ for a concentrated top-5 square-weighted portfolio.
 These performance figures should be interpreted cautiously given the portfolio's
 concentration and the idealized execution assumptions described in
 Section~\ref{sec:portfolio}.
@@ -43,8 +43,10 @@ $33\%$ of model IC), and a one-day execution delay test (T+2 entry yields negati
 Sharpe, confirming the edge is concentrated at the T+1 open).
 We hypothesize that the T+1 open concentration reflects delayed cross-sectional
 price adjustment driven by retail-dominated order flow and opening auction dynamics
-on HOSE. A pre-committed 2026 out-of-sample test yields IC $= +0.132$, consistent
-with pre-committed expectations of $[0.10, 0.13]$.
+on HOSE. A pre-committed 2026 out-of-sample test yields IC $= +0.134$, slightly
+above the pre-committed range $[0.10, 0.13]$ and consistent with a weak-pass
+interpretation: ranking skill remains intact, but realized net return remains
+cost-sensitive in the partial-year holdout.
 Data cutoff: 2026-03-18.
 \end{abstract}
 
@@ -79,8 +81,8 @@ Our main contributions are:
 
 \begin{enumerate}
   \item We demonstrate that an XGBoost classifier trained on 35 price-based features
-        achieves mean IC $\approx +0.137$ across 11 out-of-sample test years,
-        statistically significant ($p < 0.05$) in 10 of 11 years.
+        achieves mean IC $\approx +0.152$ across 11 out-of-sample test years,
+        statistically significant ($p < 0.05$) in all 11 years.
   \item We subject the signal to four pre-planned robustness tests addressing data
         snooping, sector timing, mean-reversion overlap, and execution-timing
         sensitivity.
@@ -263,8 +265,9 @@ should be interpreted in light of these constraints.
 
 Table~\ref{tab:ic_by_year} and Figure~\ref{fig:ic} report the daily Spearman IC
 by year. The signal is positive and statistically significant ($p < 0.05$) in
-10 of 11 walk-forward years. The average IC of $+0.137$ corresponds to a
-$t$-statistic of approximately $8.5$ pooled across 2015--2025.
+all 11 walk-forward years. The average IC of $+0.1515$ is economically large
+for a daily cross-sectional ranking signal and is notable for its stability
+across the full 2015--2025 walk-forward window.
 
 \input{../output/tables/tab_ic_by_year}
 
@@ -280,7 +283,7 @@ $t$-statistic of approximately $8.5$ pooled across 2015--2025.
 
 Table~\ref{tab:annual_returns} reports annual portfolio results.
 Figure~\ref{fig:equity} shows the cumulative excess return.
-As noted in Section~\ref{sec:portfolio}, the Sharpe ratio of $4.58$ reflects a
+As noted in Section~\ref{sec:portfolio}, the Sharpe ratio of $2.19$ reflects a
 highly concentrated strategy under idealized execution assumptions and should not
 be compared directly to diversified fund benchmarks.
 
@@ -336,7 +339,7 @@ Figure~\ref{fig:robust} shows the 2$\times$2 panel.
 
 We shuffle the actual labels independently of features and recompute IC.
 The permuted IC collapses to $\approx 0$, consistent with the null hypothesis
-of no predictive relationship. The original IC of $+0.137$ is not an artefact
+of no predictive relationship. The original IC of $+0.1515$ is not an artefact
 of the training procedure.
 
 \subsection{Sector Neutrality}
@@ -357,7 +360,7 @@ to within-sector stock selection rather than cross-sector timing.
 
 A simple mean-reversion rule --- ranking stocks by the negative of their recent
 5-day excess return --- generates an IC of $\approx 0.05$, accounting for
-approximately $33\%$ of the model IC of $0.137$. The model captures economically
+approximately $33\%$ of the model IC of $0.1515$. The model captures economically
 distinct information beyond what a na\"ive contrarian rule achieves, though some
 mean-reversion component is encoded in the short-horizon relative return features.
 
@@ -387,18 +390,24 @@ Before running the 2026 holdout, we pre-committed to the following expectations:
 \end{itemize}
 
 Running the model on 2026 data (389 tickers, 43 trading days, through 2026-03-18),
-we obtain IC $= +0.132$, consistent with the pre-committed range, with portfolio
-net/trade in line with prior years.
+we obtain IC $= +0.1343$, slightly above the top of the pre-committed range but
+clearly consistent with the expected magnitude of the signal. The corresponding
+portfolio result is a weak pass rather than a clean pass: the holdout portfolio
+remains gross positive, but net/trade is slightly negative at $0.30\%$ RT cost
+in this partial-year sample. We therefore interpret the 2026 evidence as:
+the signal remains alive in ranking space, but economic realization remains
+cost-sensitive and should not be overstated.
 
-The 2026 IC point estimate falls just above the upper bound of the pre-committed
-range ($0.132 > 0.13$). We attribute this to sampling variability in a partial-year
-test and do not revise our interpretation of the pre-committed expectations.
+The 2026 IC point estimate falls modestly above the upper bound of the
+pre-committed range ($0.1343 > 0.13$). Given the short partial-year window,
+we attribute this to sampling variability rather than to a meaningful change in
+the signal's underlying strength.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.7\textwidth]{../output/figures/fig5_cost_sensitivity.pdf}
   \caption{Net return per trade as a function of round-trip cost.
-           The strategy breaks even at $\approx 0.40\%$ RT cost, providing
+           The frozen paper pipeline breaks even at $\approx 0.58\%$ RT cost, providing
            headroom above the assumed $0.30\%$.}
   \label{fig:cost}
 \end{figure}
@@ -436,7 +445,8 @@ buying of prior-week losers is a well-documented pattern in emerging markets.
 \label{sec:costs}
 
 The $0.30\%$ RT assumption ($0.15\%$ per side) reflects retail brokerage fees.
-Figure~\ref{fig:cost} shows the strategy breaks even at $\approx 0.40\%$ RT,
+Figure~\ref{fig:cost} shows the frozen paper pipeline breaks even at
+$\approx 0.58\%$ RT,
 providing headroom. However, the execution model has known limitations.
 
 The model assumes full fills at the opening price for all five positions. In practice,
@@ -446,6 +456,36 @@ slippage, while mid-cap names may not. We do not model queue priority, partial f
 or market impact, and caution that realized net returns at meaningful AUM will be
 lower than reported. An execution feasibility analysis incorporating order-book data
 remains an important direction for future work.
+
+\subsection{Post-Freeze Validation Updates}
+\label{sec:postfreeze}
+
+After the frozen paper pipeline was completed, subsequent research sessions in the
+parent repository added three extensions that are not part of the compact
+reproducibility workflow here, but that strengthen the paper's interpretation.
+
+\input{../output/tables/tab_postfreeze}
+
+First, a dedicated executable holding-period grid tested whether a slower hold
+would outperform daily rebalancing once the overnight gap was removed from the
+return definition. It did not: daily rebalancing remained optimal even in the
+strict T+1-open executable framework. In the no-VIX supplemental rerun, annual
+net at $0.30\%$ RT is $+59.32\%$ for daily rebalancing, versus $+44.60\%$ for
+$H=2$ and $+21.66\%$ for $H=5$, reinforcing the claim that the signal decays
+rapidly and is genuinely short-horizon.
+
+Second, a later no-VIX production variant was subjected to explicit cost stress.
+Its exact break-even point was approximately $0.54\%$ RT, close to the frozen
+pipeline's $\approx 0.58\%$ estimate. The qualitative conclusion is unchanged:
+the signal is economically meaningful, but transaction costs are a first-order
+constraint.
+
+Third, a later 2026 live-validation rerun on the no-VIX production variant
+preserved IC at $+0.1323$ with positive gross returns. The square-weighted
+portfolio earned $+0.198\%$ gross per trade, but remained slightly negative
+net of the assumed $0.30\%$ RT cost ($-0.102\%$ per trade). This strengthens
+the honest interpretation of the 2026 evidence: the signal remains alive, but
+realized P\&L is still friction-sensitive.
 
 \subsection{Liquidity and Scalability}
 The top-5 selection is drawn from a 393-stock universe, with the model frequently
@@ -480,11 +520,12 @@ validation across 393 stocks and 11 years, and four pre-planned robustness tests
 we find:
 
 \begin{itemize}
-  \item Mean daily IC $= +0.137$ ($t \approx 8.5$), positive in 10/11 years
-  \item Top-5 square-weighted portfolio: gross $+0.40\%$ / net $+0.26\%$ per trade,
-        net Sharpe $\approx 4.58$ under idealized execution (concentrated, retail-scale)
+  \item Mean daily IC $= +0.1515$, positive and significant in 11/11 years
+  \item Top-5 square-weighted portfolio: gross $+0.575\%$ / net $+0.275\%$ per trade,
+        net Sharpe $\approx 2.19$ under idealized execution (concentrated, retail-scale)
   \item 4/4 robustness tests consistent with a genuine signal
-  \item 2026 holdout IC $= +0.132$: consistent with pre-committed range $[0.10, 0.13]$
+  \item 2026 holdout IC $= +0.1343$: strong ranking evidence, but only a weak-pass
+        economic result because partial-year net performance remains cost-sensitive
 \end{itemize}
 
 The signal is concentrated at the $T+1$ open, is not explained by sector timing,
